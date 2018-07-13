@@ -2,20 +2,27 @@
 #include <stdlib.h>
 #include <ctime>
 #include <string>
+#include <random>
 
 void main()
 {
 	MiniDump::EnableAutoDump(true);
+	//	理论上必须dump
+	/*const int iNum = 6;
+	srand((unsigned)time(nullptr));
+	int iRandom = rand() % iNum;*/
 
-	const int iNum = 6;
-	srand((unsigned)time(NULL));
-	int iRandom = rand() % iNum;
+	//	运气好则不会dump
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> dist(0, 6);
+	int iRandom = dist(mt);
 
 	switch (iRandom)
 	{
 	case 0:
 		{
-			int* p = NULL;
+			int* p = nullptr;
 			*p = 5;
 		}
 		break;
@@ -27,32 +34,29 @@ void main()
 		break;
 	case 2:
 		{
-			int* p = NULL;
+			int* p = nullptr;
 			*p = 5;
 		}
 		break;
 	case 3:
 		{
-			int* p = NULL;
+			int* p = nullptr;
 			*p = 5;
 		}
 		break;
 	case 4:
 		{
-			int* p = NULL;
+			int* p = nullptr;
 			*p = 5;
 		}
 		break;
 	case 5:
 		{
-			int* p = NULL;
+			int* p = nullptr;
 			*p = 5;
 		}
 		break;
 	default:
-		{
-			std::string strTemp = "这是奇葩，不在六道轮回之内";
-		}
 		break;
 	}
 }
