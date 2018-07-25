@@ -29,7 +29,7 @@ LONG MiniDump::ApplicationCrashHandler(EXCEPTION_POINTERS *pException)
 	TCHAR szDumpFile[MAX_PATH] = { 0 };
 	TCHAR szMsg[MAX_PATH] = { 0 };
 	SYSTEMTIME	stTime = { 0 };
-	// ¹¹½¨dumpÎÄ¼şÂ·¾¶;
+	// æ„å»ºdumpæ–‡ä»¶è·¯å¾„ï¼Œåœ¨å½“å‰è·¯å¾„ä¸‹åˆ›å»ºDumpç›®å½•ä¿å­˜dumpæ–‡ä»¶
 	GetLocalTime(&stTime);
 	::GetCurrentDirectory(MAX_PATH, szDumpDir);
 	lstrcat(szDumpDir, TEXT("\\Dump\\"));
@@ -37,10 +37,10 @@ LONG MiniDump::ApplicationCrashHandler(EXCEPTION_POINTERS *pException)
 	TSprintf(szDumpFile, _T("%s%04d%02d%02d_%02d%02d%02d.dmp"), szDumpDir,
 		stTime.wYear, stTime.wMonth, stTime.wDay,
 		stTime.wHour, stTime.wMinute, stTime.wSecond);
-	// ´´½¨dumpÎÄ¼ş;
+	// åˆ›å»ºdumpæ–‡ä»¶;
 	CreateDumpFile(szDumpFile, pException);
 
-	// µ¯³öÒ»¸ö´íÎó¶Ô»°¿ò»òÕßÌáÊ¾ÉÏ´«£¬ ²¢ÍË³ö³ÌĞò;
+	// å¼¹å‡ºä¸€ä¸ªé”™è¯¯å¯¹è¯æ¡†æˆ–è€…æç¤ºä¸Šä¼ ï¼Œ å¹¶é€€å‡ºç¨‹åº;
 	TSprintf(szMsg, _T("I'm so sorry, but the program crashed.\r\ndump file : %s"), szDumpFile);
 	FatalAppExit(-1, szMsg);
 
@@ -49,17 +49,17 @@ LONG MiniDump::ApplicationCrashHandler(EXCEPTION_POINTERS *pException)
 
 void MiniDump::CreateDumpFile(LPCWSTR strPath, EXCEPTION_POINTERS *pException)
 {
-	// ´´½¨DumpÎÄ¼ş;
+	// åˆ›å»ºDumpæ–‡ä»¶;
 	HANDLE hDumpFile = CreateFile(strPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hDumpFile != INVALID_HANDLE_VALUE)
 	{ 
-		// DumpĞÅÏ¢;
+		// Dumpä¿¡æ¯;
 		MINIDUMP_EXCEPTION_INFORMATION dumpInfo;
 		dumpInfo.ExceptionPointers = pException;
 		dumpInfo.ThreadId = GetCurrentThreadId();
 		dumpInfo.ClientPointers = TRUE;
 
-		// Ğ´ÈëDumpÎÄ¼şÄÚÈİ;
+		// å†™å…¥Dumpæ–‡ä»¶å†…å®¹;
 		MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hDumpFile, MiniDumpNormal, &dumpInfo, NULL, NULL);
 		CloseHandle(hDumpFile);
 	}
